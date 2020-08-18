@@ -1,5 +1,7 @@
 **CSS 清除浮动的几种方法（至少两种）**
 
+[更加详细参考](https://juejin.im/post/6844903504545316877)
+
 答案：
 
 ```
@@ -26,7 +28,7 @@ b 外部标签：只能将浮动盒子的影响清除，但是不会撑开盒子
       :before(在。。。之前)
 
 注意：每个元素都有自己的伪元素
-
+在父元素中添加该类，后者直接在父元素的类上使用伪元素来实现。
 .clearfix:after {
     content:"";
     height:0;
@@ -40,6 +42,27 @@ b 外部标签：只能将浮动盒子的影响清除，但是不会撑开盒子
 .clearfix {
   zoom:1;/_为了兼容 IE6_/
 }
+```
+
+方法三例子：（其实就是第一种方法的变形，原理都是一样）
+
+```
+HTML结构如下，为了惯例相符，在.topDiv的div上再添加一个clearfix类：
+<div class="topDiv clearfix">
+    <div class="textDiv">...</div>
+    <div class="floatDiv">float left</div>
+</div>
+<div class="bottomDiv">...</div>复制代码样式应用如下：
+// 省略基本的样式
+// 区别在这里
+.clearfix:after {
+    content: '.';
+    height: 0;
+    display: block;//和方法一一样必须为块级元素
+    clear: both;
+}
+
+复制代码该样式在clearfix，即父级元素的最后，添加了一个:after伪元素，通过清除伪元素的浮动，达到撑起父元素高度的目的。注意到该伪元素的display值为block，即，它是一个不可见的块级元素（有的地方使用table，因为table也是一个块级元素）。你可能已经意识到，这也只不过是前一种清除浮动方法（添加空白div）的另一种变形，其底层逻辑也是完全一样的。前面的三种方法，其本质上是一样的。
 ```
 
 
@@ -79,7 +102,7 @@ b 外部标签：只能将浮动盒子的影响清除，但是不会撑开盒子
 
 ##### 补充
 
-**设置元素浮动后，浮动元素的display为block，更准确的说像inline-block，因为设置成类似`float：left`的元素会同时拥有行内和块级的特性，最明显的不同是它的默认宽度不是 100%，行内元素默认 100%宽度占据一行，并且设置 的padding-top 和 padding-bottom 或者 width、height 都是有效果的。**
+**设置元素浮动后，浮动元素的display为block，测试显示的是block。更准确的说像inline-block，因为设置成类似`float：left`的元素会同时拥有行内和块级的特性，最明显的不同是它的默认宽度不是 100%，行内元素默认 100%宽度占据一行，并且设置 的padding-top 和 padding-bottom 或者 width、height 都是有效果的。**
 
 line元素设置的padding-top和padding-bottom，margin-top和margin-bottom都是不起作用的。
 

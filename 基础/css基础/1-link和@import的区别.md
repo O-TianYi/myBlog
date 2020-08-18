@@ -6,7 +6,7 @@
 
 **1.从属关系区别**
 
-@import是 CSS 提供的语法规则，只有导入样式表的作用；link是HTML提供的标签，不仅可以加载 CSS 文件，还可以定义 RSS、rel 连接属性等。
+@import是 CSS 提供的语法规则，只有导入样式表的作用；link是HTML提供的标签，不仅可以加载 CSS 文件，还可以定义 RSS、rel 连接属性等。rel属性表示加载的资源和文档的关系，例如rel="stylesheet"/rel="ion"分别代表加载的资源是样式和标题图标，还有media属性作用于媒体查询，即符合某种条件才会把该资源加载下来。（[rel参考](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link)）
 
 **2.加载顺序区别**
 

@@ -6,9 +6,22 @@
 
 
 
-解决方案：
+解决方案：[参考](https://blog.csdn.net/sjinsa/article/details/70919546)
 
-将下面代码替换方法二的代码，目前测试完美解决。同样随来而来的问题是 li 内的字符间隔也被设置了，我们需要将 li 内的字符间隔设为默认。
++ 最简单就是写代码的时候把所有的li都写在一行，不进行换行。
+
++ 既然是空格占一个字符的宽度，那我们索性就将`<ul>`内的字符尺寸直接设为 0，将下面样式放入样式表，问题解决
+
+```
+.wrap ul {
+  font-size: 0px;
+  li{
+  font-size: 12px;
+  }
+}
+```
+
++ 但是li父级标签字符设置为0在Safari浏览器依然出现空白；
 
 ```
 .wrap ul {
@@ -20,15 +33,25 @@
 
 ```
 .wrap ul li {
-  letter-spacing: normal;
+  letter-spacing: normal;//按照当前字体的正常间距确认
 }
 ```
 
-
+补充：letter-spacing属性为设置恩本字符的间距。
 
 
 
 #### 其他类似问题
+
+**display:inline-block 什么时候会显示间隙？**
+
+答案：间隙产生的原因是因为，代码li之间换行或空格会占据一定的位置
+
+推荐解决方法：
+
+父元素中设置 font-size:0或者letter-spaceing:-4px;
+
+
 
 **display:inline-block 什么时候不会显示间隙？(携程)**
 
