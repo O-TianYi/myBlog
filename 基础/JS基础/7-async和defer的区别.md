@@ -3,8 +3,12 @@
 答案：
 
 - 1、defer 和 async 的网络加载过程是一致的，都是异步执行。
+
 - 2、区别在于加载完成之后什么时候执行，可以看出 defer 是文档所有元素解析完成之后才执行的。
+
 - 3、如果存在多个 defer 脚本，那么它们是按照顺序执行脚本的，而 async，无论声明顺序如何，只要加载完成就立刻执行
+
+  
 
 解析：
 
@@ -70,3 +74,21 @@ script 标签存在两个属性，defer 和 async，这两个属性只对外部�
 ```
 
 有了 async 属性，浏览器会立即下载相应的脚本 a.js 和 b.js，在下载的过程中页面的处理不会停止，a.js 和 b.js 哪个先下载完成哪个就立即执行，执行过程中页面处理会停止，但是其他脚本的下载不会停止。标记为 async 的脚本并不保证按照制定它们的先后顺序执行。异步脚本一定会在页面的 load 事件前执行，但可能会在 DOMContentLoaded 事件触发之前或之后执行。
+
+
+
+
+
+
+
+我的理解：
+
+script标签没有defer和async会立即加载当前脚本，然后就会挂起GUI线程，把控制权交给js引擎，而中途执行js代码会拖慢首屏的加载时间，例如：<script defer type="text/javascript" ..></script>
+
+defer表示延迟执行引入js，当整个document解析完成后(html解析为dom树的时候)再执行脚本文件，在DOMContentLoaded（再html解析为dom树之后的生命周期）事件触发之前完成，多个脚本按顺序执行
+
+async属性表示异步执行引入的js，与defer的区别是，如果已经加载好了js，就会开始执行，即会js阻塞文档的解析，只是加载的过程不阻塞，多个脚本无法保证顺序执行。
+
+defer和async图示：
+
+![defer图示](../../../../../../Documents/%E7%AC%94%E8%AE%B0%E5%9B%BE/%E5%9B%BE/defer%E5%9B%BE%E7%A4%BA.png)![async图示](../../../../../../Documents/%E7%AC%94%E8%AE%B0%E5%9B%BE/%E5%9B%BE/async%E5%9B%BE%E7%A4%BA.png)
