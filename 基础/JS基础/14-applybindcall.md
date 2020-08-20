@@ -51,3 +51,29 @@ call 与 apply 的不同点：两者传入的列表形式不一样
 补充：
 
 call的性能要比apply要好。在jquery源码的时候有看到在源码的注释中有标注过call性能比apply要好。个人理解是内部少了一次将apply第二个参数解构的操作
+
+
+
+[实现原理参考](https://juejin.im/post/6844903782803832845#heading-12)
+
+
+
+
+
+
+
+#### 重要补充
+
+**一旦函数通过bind绑定了有效的this指向，那么在函数执行过程中this会指向该对象，即使在使用call，bind也不能改变this的指向。**
+
+原因：在bind调用的时候this，在内部把对象指向了函数的this，然后在return的方法中使用闭包的形式来调用该this，所以不能改变bind绑定的this。即如下bind 的简单实现原理：
+
+```
+Function.prototype.bind = function(context) {
+   let _me = this
+    return function() {
+        return _me.apply(context)
+    }
+}
+```
+

@@ -14,3 +14,15 @@
 ```
 
  方法：Alert()，confirm()，prompt()，open()，close()。
+
+
+
+
+
+
+
+**列举浏览器对象模型 BOM 里常用的至少 4 个对象，并列举 window 对象的常用方法至少 5 个？**
+
+答案：
+
+对象：Window，document，location，screen，history，navigator。 方法：Alert()，confirm()，prompt()，open()，close()。
