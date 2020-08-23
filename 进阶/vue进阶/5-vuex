@@ -1,0 +1,127 @@
+
+
+![image-20200823162057247](../../../../../../AppData/Roaming/Typora/typora-user-images/image-20200823162057247.png)
+
+![image-20200823162120898](../../../../../../AppData/Roaming/Typora/typora-user-images/image-20200823162120898.png)
+
+
+
+action一般进行异步请求发送，使用promise获取数据后，返回给页面进行下一步操作。书写复杂业务，mutiytion只是单单更改satet，action可以修改mutations来完成业务。
+
+![image-20200823162508873](../../../../../../AppData/Roaming/Typora/typora-user-images/image-20200823162508873.png)
+
+![image-20200823162613730](../../../../../../AppData/Roaming/Typora/typora-user-images/image-20200823162613730.png)
+
+
+
+
+
+
+
+自定义vuex
+
+mutition实现
+
+state使用了vue就可以通知外面更新数据，利用vue的响应式。
+
+![image-20200823165618513](../../../../../../AppData/Roaming/Typora/typora-user-images/image-20200823165618513.png)
+
+![](../../../../../../AppData/Roaming/Typora/typora-user-images/image-20200823165655722.png)
+
+![image-20200823165707317](../../../../../../AppData/Roaming/Typora/typora-user-images/image-20200823165707317.png)
+
+测试和平常api一样使用就可以。
+
+
+
+添加action:
+
+![image-20200823165837371](../../../../../../AppData/Roaming/Typora/typora-user-images/image-20200823165837371.png)
+
+![image-20200823170029404](../../../../../../AppData/Roaming/Typora/typora-user-images/image-20200823170029404.png)
+
+
+
+
+
+getter实现：
+
+option.getters&&this.hand...说明如果有传递的有getters这个参数就会执行以下handleGetters这个函数。
+
+![image-20200823170746038](../../../../../../AppData/Roaming/Typora/typora-user-images/image-20200823170746038.png)
+
+![image-20200823170610911](../../../../../../AppData/Roaming/Typora/typora-user-images/image-20200823170610911.png)
+
+
+
+
+
+
+
+```
+let Vue;
+const forEach = (obj, callback) => {
+    Object.keys(obj).forEach(key => {
+        callback(key, obj[key])
+    })
+}
+class Store {
+    constructor(options) {
+        this._s = new Vue({
+            data: {
+                state: options.state
+            }
+        })
+        let getters = options.getters || {}
+        this.getters = {};
+        forEach(getters, (getterName, value) => {
+            Object.defineProperty(this.getters, getterName, {
+                get: () => {
+                    return value(this.state)
+                }
+            })
+        })
+        let mutations = options.mutations || {}
+        this.mutations = {};
+        forEach(mutations, (mutationName, value) => {
+            this.mutations[mutationName] = (payload) => {
+                value(this.state, payload)
+            }
+        })
+        
+        let actions = options.actions || {}
+        this.actions = {};
+        forEach(actions,(actionName,value)=>{
+            this.actions[actionName] = (payload)=>{
+                value(this,payload)
+            }
+        })
+    }
+    dispatch=(type,payload)=>{
+        this.actions[type](payload)
+    }
+    commit=(type, payload)=>{
+        this.mutations[type](payload)
+    }
+    get state() {
+        return this._s.state
+    }
+}
+const install = _Vue => {
+    Vue = _Vue
+    Vue.mixin({
+        beforeCreate() {
+            if (this.$options && this.$options.store) {
+                this.$store = this.$options.store
+            } else {
+                this.$store = this.$parent && this.$parent.$store
+            }
+        }
+    })
+}
+export default { install, Store }
+
+```
+
+
+
