@@ -15,3 +15,27 @@
 （7） beforeDestory 实例被销毁前调用
 
 （8） destroyed 实例销毁后调用
+
+
+
+
+
+
+
+注意点：
+
++ 不要在钩子函数使用箭头函数`created: () => console.log(this.a)`，因为箭头函数没有this，会作为变量一直向上级词法作用域查找，经常会导致出现``Uncaught TypeError: Cannot read property of undefined` 或 `Uncaught TypeError: this.myMethod is not a function` 之类的错误。`正确写法有：
+
+  ```
+  created: function () {
+      // `this` 指向 vm 实例
+      console.log('a is: ' + this.a)
+  }
+  
+  create(){
+  ..
+  }
+  ```
+
+  
+

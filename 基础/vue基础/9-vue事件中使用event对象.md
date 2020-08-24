@@ -127,3 +127,115 @@ var app = new Vue({
 [![vue_003](https://github.com/O-TianYi/web-interview/raw/master/images/vue_003.jpg)](https://github.com/O-TianYi/web-interview/blob/master/images/vue_003.jpg)
 
 代码丢进 Firefox 中运行，event 果然就变成了 undefined 了。额，这个我也不知道说什么了。。。
+
+
+
+
+
+
+
+##### 事件修饰符
+
+```
+.stop
+.prevent
+.capture
+.self
+.once
+.passive
+```
+
+```
+<!-- 阻止单击事件继续传播 -->
+<a v-on:click.stop="doThis"></a>
+
+<!-- 提交事件不再重载页面 -->
+<form v-on:submit.prevent="onSubmit"></form>
+
+<!-- 修饰符可以串联 -->
+<a v-on:click.stop.prevent="doThat"></a>
+
+<!-- 只有修饰符 -->
+<form v-on:submit.prevent></form>
+
+<!-- 添加事件监听器时使用事件捕获模式 -->
+<!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
+<div v-on:click.capture="doThis">...</div>
+
+<!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+<!-- 即事件不是从内部元素触发的 -->
+<div v-on:click.self="doThat">...</div>
+
+<!-- 点击事件将只会触发一次 -->
+<a v-on:click.once="doThis"></a>
+
+<!-- 滚动事件的默认行为 (即滚动行为) 将会立即触发 -->
+<!-- 而不会等待 `onScroll` 完成  -->
+<!-- 这其中包含 `event.preventDefault()` 的情况 -->
+<div v-on:scroll.passive="onScroll">...</div>
+
+```
+
+**注意点：**
+
++ 使用修饰符的时候顺序很重要。因此，用 `v-on:click.prevent.self` 会阻止**所有的点击**，而 `v-on:click.self.prevent` 只会阻止对元素自身的点击。[深刻解析](https://segmentfault.com/q/1010000014597444)
+
++ 不要把 `.passive` 和 `.prevent` 一起使用，因为 `.prevent` 将会被忽略，同时浏览器可能会向你展示一个警告。请记住，`.passive` 会告诉浏览器你*不*想阻止事件的默认行为
+
+
+
+##### 按键修饰符
+
+```
+<!-- 只有在 `key` 是 `Enter` 时调用 `vm.submit()` -->
+<input v-on:keyup.enter="submit">
+
+// 可以使用 `v-on:keyup.f1`
+Vue.config.keyCodes.f1 = 112
+
+
+.enter
+.tab
+.delete (捕获“删除”和“退格”键)
+.esc
+.space
+.up
+.down
+.left
+.right
+```
+
+
+
+
+
+
+
+##### input的修饰符
+
+### [`.lazy`](https://cn.vuejs.org/v2/guide/forms.html#lazy)
+
+在默认情况下，`v-model` 在每次 `input` 事件触发后将输入框的值与数据进行同步 (除了[上述](https://cn.vuejs.org/v2/guide/forms.html#vmodel-ime-tip)输入法组合文字时)。你可以添加 `lazy` 修饰符，从而转为在 `change` 事件_之后_进行同步：
+
+```
+<!-- 在“change”时而非“input”时更新 -->
+<input v-model.lazy="msg">
+```
+
+### [`.number`](https://cn.vuejs.org/v2/guide/forms.html#number)
+
+如果想自动将用户的输入值转为数值类型，可以给 `v-model` 添加 `number` 修饰符：
+
+```
+<input v-model.number="age" type="number">
+```
+
+这通常很有用，因为即使在 `type="number"` 时，HTML 输入元素的值也总会返回字符串。如果这个值无法被 `parseFloat()` 解析，则会返回原始的值。
+
+### [`.trim`](https://cn.vuejs.org/v2/guide/forms.html#trim)
+
+如果要自动过滤用户输入的首尾空白字符，可以给 `v-model` 添加 `trim` 修饰符：
+
+```
+<input v-model.trim="msg">
+```
