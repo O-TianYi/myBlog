@@ -63,7 +63,7 @@
 
 
 
-#### 具名插槽（name属性）
+#### 具名插槽（name属性）v-slot:可以缩写为#
 
 ```
 <slot name="header"></slot>
@@ -73,6 +73,10 @@
 <base-layout>
 //template的所有内容都会传入对应的插槽
   <template v-slot:header>
+    <h1>Here might be a page title</h1>
+  </template>
+  //缩写
+  <template #header>
     <h1>Here might be a page title</h1>
   </template>
   
@@ -90,7 +94,7 @@
 </base-layout>
 ```
 
-**注意：v-slot只能添加在template上**
+**注意：v-slot只能添加在template上；缩写只适合slot有name的写法**
 
 
 

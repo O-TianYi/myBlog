@@ -86,3 +86,25 @@ export default [
     <!-- 这里是不被缓存的视图组件，比如 Edit！ -->
 </router-view>
 ```
+
+
+
+
+
+
+
+#### 官网重新学习的解析
+
+作用：组件之间切换的时候，有时想保持这些组件的状态，以避免反复渲染导致的性能问题。
+
+使用：
+
+```
+<!-- 失活的组件将会被缓存！-->
+<keep-alive>
+  <component v-bind:is="currentTabComponent"></component>
+</keep-alive>
+```
+
+注意：keep-alive要求被切换到的组件都有自己的名字，不论是通过组件的name选项还是局部、全局注册。
+
