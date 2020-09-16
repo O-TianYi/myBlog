@@ -1,0 +1,13 @@
+https://www.jb51.net/article/192906.htm
+
+
+
+如下所示：
+
+vm.items[indexOfItem] = newValue
+
+vue不能检测数组的变动
+
+想要实现可以使用vue的set方法
+
+this.$set(this.items,indexOfItem,newValue);

@@ -1,0 +1,103 @@
+使用v-show解决三层嵌套的问题
+参考：https://blog.csdn.net/edc3001/article/details/86833558
+ <el-collapse @change="handleChange(item)" v-show="item.recordInfo">
+              <el-collapse-item title="业务详情">
+                <p>
+                  <span>申报方式：</span>
+                  <span>{{item.recordInfo.declareMethod?item.recordInfo.declareMethod:'无'}}</span>
+                </p>
+                <p>
+                  <span>申报内容：</span>
+                  <span>{{item.recordInfo.declareContent}}</span>
+                </p>
+                <p>
+                  <span>申报状态：</span>
+                  <span>{{item.recordInfo.verifyStatus}}</span>
+                </p>
+              </el-collapse-item>
+            </el-collapse>
+
+
+
+
+对内联样式的覆盖，并且对最高级的样式覆盖
+<style lang="scss" scoped>
+.nest-menu /deep/ .el-menu-item {
+  background-color: #596f9b !important;
+  &.is-active {
+    background-color: #768cb9 !important;
+  }
+}
+</style>
+
+
+
+
+限制上传图片的类型
+<el-upload
+                    class="upload_input"
+                    :action="actionUrl"
+                    :on-success="handleSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    :show-file-list="false"
+                  >
+</el-upload>
+beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isPNG = file.type === 'image/png'
+      // const isLt2M = file.size / 1024 / 1024 < 10;
+      if (!isJPG && !isPNG) {
+        this.$message.error('上传文件格式只能是 JPG和png 格式!')
+      }
+      // if (!isLt2M) {
+      //   this.$message.error("上传头像图片大小不能超过 10MB!");
+      // }
+      // return (isLt2M && isJPG) || isPNG;
+      return isJPG || isPNG
+    },
+
+
+
+
+html转换为图片下载（参考：https://www.cnblogs.com/77yf/p/12610028.html）
+//将iframe元素生成为PDF文件
+    htmlToPdf() {
+      let that = this
+      var title = 'pdf'
+      var ifra = document.getElementById(this.currentTabIdIndex)
+      html2Canvas(ifra, {//把目标节点转换为图片
+        allowTaint: true,
+        x: 10,//在生成图片的x偏移
+        y: 5,//在生成图片的y偏移
+        scale: 2,
+        width: 1536,//生成图片的宽度
+        height: 700,//生成图片的高度
+        logging: true,
+      }).then(function (canvas) {
+        let contentWidth = canvas.width //画布的宽
+        let contentHeight = canvas.height //画布的高
+        let pageHeight = (contentWidth / that.pdfWidth) * that.pdfHeight
+        let leftHeight = contentHeight
+        let position = 0
+        let imgWidth = that.pdfWidth
+        let imgHeight = (that.pdfWidth / contentWidth) * contentHeight
+        let pageData = canvas.toDataURL('image/jpeg', 1.0)//把对应的节点进行转换
+        let PDF = new JsPDF('', 'pt', 'a4')
+	//一页的情况下显示
+        if (leftHeight < pageHeight) {
+	  //参数为：需要画的目标图片，类型，x，y，画的宽度，画的高度
+          PDF.addImage(pageData, 'JPEG', 60, 30, imgWidth, imgHeight)
+        } else {//多页的情形下显示
+          while (leftHeight > 0) {
+            PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+            leftHeight -= pageHeight
+            position -= that.pdfHeight
+            if (leftHeight > 0) {
+              PDF.addPage()
+            }
+          }
+        }
+        var pdfBase64 = PDF.output('datauristring')
+        that.uploadPdf(pdfBase64)
+      })
+    },

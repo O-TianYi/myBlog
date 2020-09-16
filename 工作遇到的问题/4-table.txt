@@ -1,0 +1,22 @@
+<table width="888" border="2" align="center" cellspacing="0" cellpadding="0" bgcolor="#ddd">
+      <marquee>
+        <h1>
+          <font color="#f0c" style="font-family:'叶根友毛笔行书2.0版'">
+            我们的青春</font>
+        </h1>
+      </marquee>
+</table>
+
+自动循环显示
+
+
+<table width="456" align="center" cellspacing="0" border="1">
+      <caption>
+        <h1>人员信息表</h1>
+      </caption>
+<caption align="bottom">2018.08.29</caption>
+      <caption align="bottom">
+        <h5>表 2-1</h5>
+      </caption>
+</table>
+表头标题
