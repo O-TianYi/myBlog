@@ -1,0 +1,35 @@
+https://www.cnblogs.com/mmzuo-798/p/10103348.html//点击一行即可展开效果
+
+控制是否是可以展开的行：
+<el-table
+      ref="multipleTable"
+      :data="policyFileList"
+      default-expand-all//默认展开
+	:row-class-name="getRowClass"//使用添加类来控制是否展开的显示和影藏
+      @row-click="rowClick"
+    >
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <el-table
+            :data="props.row.userDeclarepAttachmentList"
+            stripe
+            style="width: 100%"
+            :show-header="false"
+          >
+....
+//优化点击展开
+    rowClick(row, event, column) {
+      this.$refs.multipleTable.toggleRowExpansion(row)
+    },
+
+// 判断表格是否有子项，无子项不显示展开按钮
+    getRowClass(row, rowIndex) {
+      // children 是你子项的数组 key
+      if (row.row.userDeclarepAttachmentList.length === 0) {
+        return 'row-expand-cover'
+      }
+    },
+
+/deep/ .el-table .row-expand-cover .cell .el-table__expand-icon {
+  display: none;
+}
