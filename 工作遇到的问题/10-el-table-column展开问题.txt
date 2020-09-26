@@ -1,35 +1,50 @@
-https://www.cnblogs.com/mmzuo-798/p/10103348.html//µã»÷Ò»ĞĞ¼´¿ÉÕ¹¿ªĞ§¹û
+**el-tableå®ç°el-table-columnå¯å±•å¼€æ•ˆæœ**
 
-¿ØÖÆÊÇ·ñÊÇ¿ÉÒÔÕ¹¿ªµÄĞĞ£º
+[å‚è€ƒ](https://www.cnblogs.com/mmzuo-798/p/10103348.html)
+
+```
+//æ§åˆ¶æ˜¯å¦æ˜¯å¯ä»¥å±•å¼€çš„è¡Œï¼š
 <el-table
-      ref="multipleTable"
-      :data="policyFileList"
-      default-expand-all//Ä¬ÈÏÕ¹¿ª
-	:row-class-name="getRowClass"//Ê¹ÓÃÌí¼ÓÀàÀ´¿ØÖÆÊÇ·ñÕ¹¿ªµÄÏÔÊ¾ºÍÓ°²Ø
-      @row-click="rowClick"
+ref="multipleTable"
+:data="policyFileList"
+default-expand-all//é»˜è®¤å±•å¼€
+:row-class-name="getRowClass"//ä½¿ç”¨æ·»åŠ ç±»æ¥æ§åˆ¶æ˜¯å¦å±•å¼€çš„æ˜¾ç¤ºå’Œå½±è—
+@row-click="rowClick"
+>
+    <el-table-column type="expand">
+    <template slot-scope="props">
+    <el-table
+    :data="props.row.userDeclarepAttachmentList"
+    stripe
+    style="width: 100%"
+    :show-header="false"
     >
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-table
-            :data="props.row.userDeclarepAttachmentList"
-            stripe
-            style="width: 100%"
-            :show-header="false"
-          >
-....
-//ÓÅ»¯µã»÷Õ¹¿ª
-    rowClick(row, event, column) {
-      this.$refs.multipleTable.toggleRowExpansion(row)
-    },
+    ....
+	</el-table-cloumn>
+</el-table>
 
-// ÅĞ¶Ï±í¸ñÊÇ·ñÓĞ×ÓÏî£¬ÎŞ×ÓÏî²»ÏÔÊ¾Õ¹¿ª°´Å¥
-    getRowClass(row, rowIndex) {
-      // children ÊÇÄã×ÓÏîµÄÊı×é key
-      if (row.row.userDeclarepAttachmentList.length === 0) {
-        return 'row-expand-cover'
-      }
-    },
 
+//ä¼˜åŒ–ç‚¹å‡»å±•å¼€
+rowClick(row, event, column) {
+	this.$refs.multipleTable.toggleRowExpansion(row)
+},
+// åˆ¤æ–­è¡¨æ ¼æ˜¯å¦æœ‰å­é¡¹ï¼Œæ— å­é¡¹ä¸æ˜¾ç¤ºå±•å¼€æŒ‰é’®
+getRowClass(row, rowIndex) {
+    if (row.row.userDeclarepAttachmentList.length === 0) {
+    	return 'row-expand-cover'
+    }
+},
+
+//æ²¡æœ‰å­é¡¹çš„æ—¶å€™ä¸æ˜¾ç¤ºå±•å¼€çš„å°ç®­å¤´
 /deep/ .el-table .row-expand-cover .cell .el-table__expand-icon {
   display: none;
 }
+```
+
+
+
+å­˜åœ¨çš„é—®é¢˜ï¼š
+
++ å› ä¸ºä½¿ç”¨äº†default-expand-allï¼Œæ‰€ä»¥ä¼šæŠŠæ²¡æœ‰æ•°æ®çš„å†…å®¹ä¹Ÿé»˜è®¤å±•å¼€äº†ï¼Œæ˜¾ç¤ºä¸ºæš‚æ— æ•°æ®ã€‚
++ è§£å†³ï¼š
+

@@ -1,26 +1,5 @@
-Ê¹ÓÃv-show½â¾öÈı²ãÇ¶Ì×µÄÎÊÌâ
-²Î¿¼£ºhttps://blog.csdn.net/edc3001/article/details/86833558
- <el-collapse @change="handleChange(item)" v-show="item.recordInfo">
-              <el-collapse-item title="ÒµÎñÏêÇé">
-                <p>
-                  <span>Éê±¨·½Ê½£º</span>
-                  <span>{{item.recordInfo.declareMethod?item.recordInfo.declareMethod:'ÎŞ'}}</span>
-                </p>
-                <p>
-                  <span>Éê±¨ÄÚÈİ£º</span>
-                  <span>{{item.recordInfo.declareContent}}</span>
-                </p>
-                <p>
-                  <span>Éê±¨×´Ì¬£º</span>
-                  <span>{{item.recordInfo.verifyStatus}}</span>
-                </p>
-              </el-collapse-item>
-            </el-collapse>
+**å¯¹å†…è”æ ·å¼çš„è¦†ç›–ï¼Œå¹¶ä¸”å¯¹æœ€é«˜çº§çš„æ ·å¼è¦†ç›–**
 
-
-
-
-¶ÔÄÚÁªÑùÊ½µÄ¸²¸Ç£¬²¢ÇÒ¶Ô×î¸ß¼¶µÄÑùÊ½¸²¸Ç
 <style lang="scss" scoped>
 .nest-menu /deep/ .el-menu-item {
   background-color: #596f9b !important;
@@ -33,71 +12,95 @@
 
 
 
-ÏŞÖÆÉÏ´«Í¼Æ¬µÄÀàĞÍ
+
+
+
+
+
+
+**el-uploadé™åˆ¶ä¸Šä¼ å›¾ç‰‡çš„ç±»å‹**
+
+zåœ¨el-uoloadä¸­ä½¿ç”¨before-uploadåœ¨å‘é€å‰å¯¹é€‰ä¸­çš„å›¾ç‰‡ç±»å‹è¿›è¡Œé™åˆ¶ã€‚ä»£ç å¦‚ä¸‹ï¼š
+
+```
 <el-upload
-                    class="upload_input"
-                    :action="actionUrl"
-                    :on-success="handleSuccess"
-                    :before-upload="beforeAvatarUpload"
-                    :show-file-list="false"
-                  >
+class="upload_input"
+:action="actionUrl"
+:on-success="handleSuccess"
+:before-upload="beforeAvatarUpload"
+:show-file-list="false"
+>
 </el-upload>
+
 beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isPNG = file.type === 'image/png'
-      // const isLt2M = file.size / 1024 / 1024 < 10;
-      if (!isJPG && !isPNG) {
-        this.$message.error('ÉÏ´«ÎÄ¼ş¸ñÊ½Ö»ÄÜÊÇ JPGºÍpng ¸ñÊ½!')
-      }
-      // if (!isLt2M) {
-      //   this.$message.error("ÉÏ´«Í·ÏñÍ¼Æ¬´óĞ¡²»ÄÜ³¬¹ı 10MB!");
-      // }
-      // return (isLt2M && isJPG) || isPNG;
-      return isJPG || isPNG
-    },
+const isJPG = file.type === 'image/jpeg'
+const isPNG = file.type === 'image/png'
+// const isLt2M = file.size / 1024 / 1024 < 10;
+if (!isJPG && !isPNG) {
+	this.$message.error('ä¸Šä¼ æ–‡ä»¶æ ¼å¼åªèƒ½æ˜¯ JPGå’Œpng æ ¼å¼!')
+}
+// if (!isLt2M) {
+//   this.$message.error("ä¸Šä¼ å¤´åƒå›¾ç‰‡å¤§å°ä¸èƒ½è¶…è¿‡ 10MB!");
+// }
+return isJPG || isPNG
+},
+```
 
 
 
 
-html×ª»»ÎªÍ¼Æ¬ÏÂÔØ£¨²Î¿¼£ºhttps://www.cnblogs.com/77yf/p/12610028.html£©
-//½«iframeÔªËØÉú³ÉÎªPDFÎÄ¼ş
-    htmlToPdf() {
-      let that = this
-      var title = 'pdf'
-      var ifra = document.getElementById(this.currentTabIdIndex)
-      html2Canvas(ifra, {//°ÑÄ¿±ê½Úµã×ª»»ÎªÍ¼Æ¬
+
+
+
+
+
+**htmlè½¬æ¢ä¸ºå›¾ç‰‡ä¸‹è½½**
+
+[å‚è€ƒ](https://www.cnblogs.com/77yf/p/12610028.html)
+
+```
+/å°†iframeå…ƒç´ ç”Ÿæˆä¸ºPDFæ–‡ä»¶
+htmlToPdf() {
+    let that = this
+    var title = 'pdf'
+    var ifra = document.getElementById('#dom')//è·å–éœ€è¦è½¬æ¢çš„domèŠ‚ç‚¹
+    html2Canvas(ifra, {//æŠŠç›®æ ‡èŠ‚ç‚¹è½¬æ¢ä¸ºå›¾ç‰‡
         allowTaint: true,
-        x: 10,//ÔÚÉú³ÉÍ¼Æ¬µÄxÆ«ÒÆ
-        y: 5,//ÔÚÉú³ÉÍ¼Æ¬µÄyÆ«ÒÆ
+        x: 10,//åœ¨ç”Ÿæˆå›¾ç‰‡çš„xåç§»
+        y: 5,//åœ¨ç”Ÿæˆå›¾ç‰‡çš„yåç§»
+        //scrollX//åœ¨ç”»å¸ƒä¸Šå®ç°xåç§»
+        //scrollY
         scale: 2,
-        width: 1536,//Éú³ÉÍ¼Æ¬µÄ¿í¶È
-        height: 700,//Éú³ÉÍ¼Æ¬µÄ¸ß¶È
+        width: 1536,//ç”Ÿæˆcanvasçš„å®½åº¦
+        height: 700,//ç”Ÿæˆcanvasçš„é«˜åº¦
         logging: true,
-      }).then(function (canvas) {
-        let contentWidth = canvas.width //»­²¼µÄ¿í
-        let contentHeight = canvas.height //»­²¼µÄ¸ß
+    }).then(function (canvas) {
+        let contentWidth = canvas.width //ç”»å¸ƒçš„å®½
+        let contentHeight = canvas.height //ç”»å¸ƒçš„é«˜
         let pageHeight = (contentWidth / that.pdfWidth) * that.pdfHeight
         let leftHeight = contentHeight
         let position = 0
         let imgWidth = that.pdfWidth
         let imgHeight = (that.pdfWidth / contentWidth) * contentHeight
-        let pageData = canvas.toDataURL('image/jpeg', 1.0)//°Ñ¶ÔÓ¦µÄ½Úµã½øĞĞ×ª»»
+        let pageData = canvas.toDataURL('image/jpeg', 1.0)//æŠŠå¯¹åº”çš„èŠ‚ç‚¹è¿›è¡Œè½¬æ¢
         let PDF = new JsPDF('', 'pt', 'a4')
-	//Ò»Ò³µÄÇé¿öÏÂÏÔÊ¾
+        //ä¸€é¡µçš„æƒ…å†µä¸‹æ˜¾ç¤º
         if (leftHeight < pageHeight) {
-	  //²ÎÊıÎª£ºĞèÒª»­µÄÄ¿±êÍ¼Æ¬£¬ÀàĞÍ£¬x£¬y£¬»­µÄ¿í¶È£¬»­µÄ¸ß¶È
-          PDF.addImage(pageData, 'JPEG', 60, 30, imgWidth, imgHeight)
-        } else {//¶àÒ³µÄÇéĞÎÏÂÏÔÊ¾
-          while (leftHeight > 0) {
+            //å‚æ•°ä¸ºï¼šéœ€è¦ç”»çš„ç›®æ ‡å›¾ç‰‡ï¼Œç±»å‹ï¼Œxï¼Œyï¼Œç”»çš„å®½åº¦ï¼Œç”»çš„é«˜åº¦
+            PDF.addImage(pageData, 'JPEG', 60, 30, imgWidth, imgHeight)
+        } else {//å¤šé¡µçš„æƒ…å½¢ä¸‹æ˜¾ç¤º
+            while (leftHeight > 0) {
             PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
             leftHeight -= pageHeight
             position -= that.pdfHeight
             if (leftHeight > 0) {
-              PDF.addPage()
-            }
-          }
-        }
-        var pdfBase64 = PDF.output('datauristring')
-        that.uploadPdf(pdfBase64)
-      })
-    },
+            PDF.addPage()
+    	}
+    }
+    }
+    //PDF.save('a.pdf');//ä¹Ÿå¯ä»¥ç›´æ¥è¾“å‡ºä¸ºa.pdfæ–‡ä»¶
+    var pdfBase64 = PDF.output('datauristring')
+    that.uploadPdf(pdfBase64)
+    })
+},
+```
