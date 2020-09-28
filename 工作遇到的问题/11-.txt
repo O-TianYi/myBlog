@@ -1,0 +1,18 @@
+自定义组件绑定点击事件需要添加.native属性，否则无效
+<my-radio @click.native="clickRadio">
+
+但是绑定的.native可能会触发两次绑定的事件，例如el-radio的组件就会，因为el-radio中的label中嵌套input
+，而方法会绑定在input上，就会产生冒泡反应，所以会触发两次效果。
+解决：
+<my-radio @click.native="clickRadio($event)">
+clickRadio(ele){
+    if (el.target.tagName == 'INPUT') return
+     console.log(value)
+
+}
+
+
+建议使用： @click.native.stop="changeData7($event,item.value)"
+
+
+参考：https://blog.csdn.net/Yukinoshita_kino/article/details/106338236?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.add_param_isCf&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.add_param_isCf

@@ -1,4 +1,5 @@
 https://www.cnblogs.com/mmzuo-798/p/10103348.html//点击一行即可展开效果
+https://www.cnblogs.com/jin-zhe/p/9258578.html//控制expand的显示和影藏箭头
 
 控制是否是可以展开的行：
 <el-table
@@ -33,3 +34,50 @@ https://www.cnblogs.com/mmzuo-798/p/10103348.html//点击一行即可展开效果
 /deep/ .el-table .row-expand-cover .cell .el-table__expand-icon {
   display: none;
 }
+
+
+
+直接使用default-expand-all这个属性会把没有数据的选项也会展开，展开为无数据
+解决办法为：
+<el-table
+      :data="policyFileList"
+      :row-key="getRowKeys"
+      :expand-row-keys="expandsAttachmentList"
+      :row-class-name="getRowClass"
+      @row-click="rowClick"
+ >
+</el-table>
+//获取可以展开的附件列表
+expandsAttachmentList: [],
+// 获取row的key值
+    getRowKeys(row) {
+      return row.id
+    },
+    //优化点击展开
+    rowClick(row, event, column) {
+      if (row.userDeclarepAttachmentList.length > 0) {
+        this.$refs.multipleTable.toggleRowExpansion(row)
+      }
+    },
+    // 判断表格是否有子项，无子项不显示展开按钮
+    getRowClass(row, rowIndex) {
+      // children 是你子项的数组 key
+      if (row.row.userDeclarepAttachmentList.length === 0) {
+        return 'row-expand-cover'
+      }
+    },
+
+
+------  
+//-----获取数据请求中添加一个遍历把对应的id存进去，id对应getRowKeys的返回的值
+this.policyFileList.forEach((val, index) => {
+            if (val.userDeclarepAttachmentList.length > 0) {
+              this.expandsAttachmentList.push(val.id)
+            }
+          })
+          console.log('需要展开的id为', this.expandsAttachmentList)
+        }
+
+
+
+

@@ -1,3 +1,128 @@
-1.activated��ҳ���һ�ν����ʱ�򣬹��Ӵ�����˳����created->mounted->activated
-2.deactivated ��ҳ���˳���ʱ��ᴥ��deactivated�����ٴ�ǰ�����ߺ��˵�ʱ��ֻ����activated
+1.activated：页面第一次进入的时候，钩子触发的顺序是created->mounted->activated
+2.deactivated ：页面退出的时候会触发deactivated，当再次前进或者后退的时候只触发activated
+
+
+keep-alive的include必须对应的组件的name，不然不起效果，即如下：
+<keep-alive :include="cachedViews">
+        <!-- <keep-alive> -->
+        <router-view :key="key" />
+</keep-alive>
+
+//cachedViews是一个缓存组件的数组，存储的组价的name
+computed: {
+    cachedViews() {
+      console.log(
+        '添加到缓存的页面有：',
+        this.$store.state.tagsView.cachedViews
+      )
+      return this.$store.state.tagsView.cachedViews
+    },
+}
+
+需要缓存的组件必须添加name，如下：
+export default {
+  name: 'organ-category-manage',
+  activated() {
+    console.log('触发了organ-category-manage再次获取数据', this.dataForm)
+  },
+}
+
+注意：第一次访问的时候，生命周期顺序为created->mounted->activated，所以需要缓存的组件不需要写create方法，否则会发生两次请求
+
+
+
+
+
+使用keep-alive会存在的问题：
+
++ 使用actived来直接取代created或者mounted的生命周期时候做的操作，例如发送请求等。
++ 若actived和created生命周期共存会存在的问题是，第一次访问的时候会触发created和actived这两个生命周期，导致的结果就是请求会发送两次，增加服务器的压力。
+
++ 若使用actived，把created生命周期删除。会出现的问题：强制刷新，请求没有，原因是强制刷新的时候不会走actived这个生命周期，所以导致请求没有发送请求。
+
++ 解决强刷不经过actived生命周期的解决办法是添加一个变量来控制该组件切换是否为第一次进入还是非第二次进入。
+
+  ```
+  data() {
+      return {
+      	firstEnter:false
+      }
+  }
+  created() {
+      this.getDataList()
+    },
+    activated() {
+      if (this.firstEnter) {//非第一次进入的时候
+        this.getDataList()
+      } else {//第一次进入，标识该组件已经被缓存
+        this.firstEnter = true
+      }
+    },
+  ```
+
++ 还会存在的问题，例如该缓存的页面中有一个输入框，该输入框是用于搜索数据然后渲染到页面的，所以当在该输入框输入了内容的时候，第二次切换回来的时候就会进入actived生命周期执行getDataList方法获取数据列表，并携带了输入框的条件。解决办法是：用两个状态保存，一个状态保存用户在输入框输入的内容，一个保存用户点击了查询按钮后当前显示在页面上的数据的状态。这样既可以保存用户输入的内容，也可以实现保存组件状态的问题。
+
+  ```
+   data() {
+      return {
+      dataForm: {//用于保存用户输入的状态
+          pageNo: 1,
+          pageSize: 10,
+          keyWord: '',
+       },
+        keepStateDataForm: {//用于作为查询条件的状态
+          pageNo: 1,
+          pageSize: 10,
+          keyWord: '',
+        },
+      }
+  }
+  //获取渲染数据的统一方法，包括查询
+  getDataList(index) {
+        if (index) {
+          this.dataForm.pageNo = index
+          //查询的时候保存最新的数据列表
+          this.keepStateDataForm = JSON.parse(JSON.stringify(this.dataForm))
+        }
+        this.dataListLoading = true
+        let params = {
+          pageNo: this.dataForm.pageNo,//使用原数据的pageNo和pageSize
+          pageSize: this.dataForm.pageSize,
+          keyWord: this.keepStateDataForm.keyWord,
+        }
+        //发送请求获取数据
+        activityInfoList(params).then(res=>{...})
+   }
+   
+   
+   /**分页的方法，谨慎使用带参数的getDataList方法，因为会进行一个状态的保存，
+   注意的状态保存会影响下一次数据的查询。可以使用下面代码解决，需要传递pageNo的问题
+   `this.dataForm.pageNo=1;this.getDataList()`
+   
+   **/
+   // 每页数
+   sizeChangeHandle(val) {
+       this.dataForm.pageSize = val
+       this.dataForm.pageNo = 1
+       this.getDataList()
+   },
+  
+  // 当前页
+  currentChangeHandle(val) {
+      this.dataForm.pageNo = val
+      this.getDataList()
+  },
+  
+  reset() {
+      this.dataForm = {
+          pageNo: 1,
+          pageSize: 10,
+          keyWord: '',
+      }
+      this.keepStateDataForm = JSON.parse(JSON.stringify(this.dataForm))
+      this.getDataList(1)
+  },
+  ```
+
+  
 
