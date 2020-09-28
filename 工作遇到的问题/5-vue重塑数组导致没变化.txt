@@ -2,12 +2,16 @@ https://www.jb51.net/article/192906.htm
 
 
 
-ÈçÏÂËùÊ¾£º
+å¦‚ä¸‹æ‰€ç¤ºï¼š
 
 vm.items[indexOfItem] = newValue
 
-vue²»ÄÜ¼ì²âÊı×éµÄ±ä¶¯
+vueä¸èƒ½æ£€æµ‹æ•°ç»„çš„å˜åŠ¨
 
-ÏëÒªÊµÏÖ¿ÉÒÔÊ¹ÓÃvueµÄset·½·¨
+æƒ³è¦å®ç°å¯ä»¥ä½¿ç”¨vueçš„setæ–¹æ³•
 
 this.$set(this.items,indexOfItem,newValue);
+
+æˆ–è€…
+
+this.$set(this,'vm',data.data)

@@ -1,44 +1,52 @@
-https://www.cnblogs.com/mmzuo-798/p/10103348.html//µã»÷Ò»ĞĞ¼´¿ÉÕ¹¿ªĞ§¹û
-https://www.cnblogs.com/jin-zhe/p/9258578.html//¿ØÖÆexpandµÄÏÔÊ¾ºÍÓ°²Ø¼ıÍ·
+https://www.cnblogs.com/mmzuo-798/p/10103348.html//ï¿½ï¿½ï¿½Ò»ï¿½Ğ¼ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½Ğ§ï¿½ï¿½
+https://www.cnblogs.com/jin-zhe/p/9258578.html//ï¿½ï¿½ï¿½ï¿½expandï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ó°ï¿½Ø¼ï¿½Í·
+**el-tableå®ç°el-table-columnå¯å±•å¼€æ•ˆæœ**
 
-¿ØÖÆÊÇ·ñÊÇ¿ÉÒÔÕ¹¿ªµÄĞĞ£º
+[å‚è€ƒ](https://www.cnblogs.com/mmzuo-798/p/10103348.html)
+
+```
+//æ§åˆ¶æ˜¯å¦æ˜¯å¯ä»¥å±•å¼€çš„è¡Œï¼š
 <el-table
-      ref="multipleTable"
-      :data="policyFileList"
-      default-expand-all//Ä¬ÈÏÕ¹¿ª
-	:row-class-name="getRowClass"//Ê¹ÓÃÌí¼ÓÀàÀ´¿ØÖÆÊÇ·ñÕ¹¿ªµÄÏÔÊ¾ºÍÓ°²Ø
-      @row-click="rowClick"
+ref="multipleTable"
+:data="policyFileList"
+default-expand-all//é»˜è®¤å±•å¼€
+:row-class-name="getRowClass"//ä½¿ç”¨æ·»åŠ ç±»æ¥æ§åˆ¶æ˜¯å¦å±•å¼€çš„æ˜¾ç¤ºå’Œå½±è—
+@row-click="rowClick"
+>
+    <el-table-column type="expand">
+    <template slot-scope="props">
+    <el-table
+    :data="props.row.userDeclarepAttachmentList"
+    stripe
+    style="width: 100%"
+    :show-header="false"
     >
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-table
-            :data="props.row.userDeclarepAttachmentList"
-            stripe
-            style="width: 100%"
-            :show-header="false"
-          >
-....
-//ÓÅ»¯µã»÷Õ¹¿ª
-    rowClick(row, event, column) {
-      this.$refs.multipleTable.toggleRowExpansion(row)
-    },
+    ....
+	</el-table-cloumn>
+</el-table>
 
-// ÅĞ¶Ï±í¸ñÊÇ·ñÓĞ×ÓÏî£¬ÎŞ×ÓÏî²»ÏÔÊ¾Õ¹¿ª°´Å¥
-    getRowClass(row, rowIndex) {
-      // children ÊÇÄã×ÓÏîµÄÊı×é key
-      if (row.row.userDeclarepAttachmentList.length === 0) {
-        return 'row-expand-cover'
-      }
-    },
 
+//ä¼˜åŒ–ç‚¹å‡»å±•å¼€
+rowClick(row, event, column) {
+	this.$refs.multipleTable.toggleRowExpansion(row)
+},
+// åˆ¤æ–­è¡¨æ ¼æ˜¯å¦æœ‰å­é¡¹ï¼Œæ— å­é¡¹ä¸æ˜¾ç¤ºå±•å¼€æŒ‰é’®
+getRowClass(row, rowIndex) {
+    if (row.row.userDeclarepAttachmentList.length === 0) {
+    	return 'row-expand-cover'
+    }
+},
+
+//æ²¡æœ‰å­é¡¹çš„æ—¶å€™ä¸æ˜¾ç¤ºå±•å¼€çš„å°ç®­å¤´
 /deep/ .el-table .row-expand-cover .cell .el-table__expand-icon {
   display: none;
 }
+<<<<<<< HEAD
 
 
 
-Ö±½ÓÊ¹ÓÃdefault-expand-allÕâ¸öÊôĞÔ»á°ÑÃ»ÓĞÊı¾İµÄÑ¡ÏîÒ²»áÕ¹¿ª£¬Õ¹¿ªÎªÎŞÊı¾İ
-½â¾ö°ì·¨Îª£º
+Ö±ï¿½ï¿½Ê¹ï¿½ï¿½default-expand-allï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½İµï¿½Ñ¡ï¿½ï¿½Ò²ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ì·¨Îªï¿½ï¿½
 <el-table
       :data="policyFileList"
       :row-key="getRowKeys"
@@ -47,21 +55,21 @@ https://www.cnblogs.com/jin-zhe/p/9258578.html//¿ØÖÆexpandµÄÏÔÊ¾ºÍÓ°²Ø¼ıÍ·
       @row-click="rowClick"
  >
 </el-table>
-//»ñÈ¡¿ÉÒÔÕ¹¿ªµÄ¸½¼şÁĞ±í
+//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½Ğ±ï¿½
 expandsAttachmentList: [],
-// »ñÈ¡rowµÄkeyÖµ
+// ï¿½ï¿½È¡rowï¿½ï¿½keyÖµ
     getRowKeys(row) {
       return row.id
     },
-    //ÓÅ»¯µã»÷Õ¹¿ª
+    //ï¿½Å»ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½
     rowClick(row, event, column) {
       if (row.userDeclarepAttachmentList.length > 0) {
         this.$refs.multipleTable.toggleRowExpansion(row)
       }
     },
-    // ÅĞ¶Ï±í¸ñÊÇ·ñÓĞ×ÓÏî£¬ÎŞ×ÓÏî²»ÏÔÊ¾Õ¹¿ª°´Å¥
+    // ï¿½Ğ¶Ï±ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î£¬ï¿½ï¿½ï¿½ï¿½ï¿½î²»ï¿½ï¿½Ê¾Õ¹ï¿½ï¿½ï¿½ï¿½Å¥
     getRowClass(row, rowIndex) {
-      // children ÊÇÄã×ÓÏîµÄÊı×é key
+      // children ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ key
       if (row.row.userDeclarepAttachmentList.length === 0) {
         return 'row-expand-cover'
       }
@@ -69,15 +77,25 @@ expandsAttachmentList: [],
 
 
 ------  
-//-----»ñÈ¡Êı¾İÇëÇóÖĞÌí¼ÓÒ»¸ö±éÀú°Ñ¶ÔÓ¦µÄid´æ½øÈ¥£¬id¶ÔÓ¦getRowKeysµÄ·µ»ØµÄÖµ
+//-----ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¶ï¿½Ó¦ï¿½ï¿½idï¿½ï¿½ï¿½È¥ï¿½ï¿½idï¿½ï¿½Ó¦getRowKeysï¿½Ä·ï¿½ï¿½Øµï¿½Öµ
 this.policyFileList.forEach((val, index) => {
             if (val.userDeclarepAttachmentList.length > 0) {
               this.expandsAttachmentList.push(val.id)
             }
           })
-          console.log('ĞèÒªÕ¹¿ªµÄidÎª', this.expandsAttachmentList)
+          console.log('ï¿½ï¿½ÒªÕ¹ï¿½ï¿½ï¿½ï¿½idÎª', this.expandsAttachmentList)
         }
 
 
 
+=======
+```
+
+
+
+å­˜åœ¨çš„é—®é¢˜ï¼š
+
++ å› ä¸ºä½¿ç”¨äº†default-expand-allï¼Œæ‰€ä»¥ä¼šæŠŠæ²¡æœ‰æ•°æ®çš„å†…å®¹ä¹Ÿé»˜è®¤å±•å¼€äº†ï¼Œæ˜¾ç¤ºä¸ºæš‚æ— æ•°æ®ã€‚
++ è§£å†³ï¼š
+>>>>>>> 58a0e2111a956da1e5d84a3e460d2cda87b7fcd8
 
